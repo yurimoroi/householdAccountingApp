@@ -1,0 +1,44 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Noto+Sans+JP:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Shippori+Mincho&display=swap");
+
+* {
+    font-family: "Roboto Mono";
+    color: $text-main-color;
+    font-weight: 300;
+    line-height: 100%;
+    margin: 0;
+}
+
+span,
+a,
+p,
+label,
+li {
+    font-family: "Roboto Mono";
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: 64px 1fr;
+    grid-template-areas:
+        "sidebar header"
+        "sidebar main";
+
+    & > .l-main {
+        grid-area: main;
+    }
+}
+
+@include respond("md") {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "main";
+    }
+}
