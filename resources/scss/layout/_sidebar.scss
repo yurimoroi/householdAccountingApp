@@ -1,0 +1,67 @@
+@use "../foundation/mixins" as *;
+
+.l-sidebar {
+    grid-area: sidebar;
+
+    & > .e-blank {
+        height: 64px;
+    }
+
+    & > .e-list {
+        list-style: none;
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+        padding-left: 0;
+
+        & > .e-item {
+            padding: 10px 0 10px 20px;
+            transition: 0.5s;
+
+            &.active {
+                background: #ebebeb;
+            }
+
+            & > .e-link {
+                display: flex;
+                align-items: center;
+                gap: 30px;
+
+                & > .e-link-text {
+                    color: #666;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+@include respond("md") {
+    .l-sidebar {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
+
+        &.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        & > .e-blank {
+            width: 300px;
+            background: #fff;
+        }
+
+        & > .e-list {
+            width: 300px;
+            height: 100%;
+            background: #fff;
+        }
+    }
+}

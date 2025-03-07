@@ -1,0 +1,63 @@
+@use "../foundation/variables" as *;
+@use "../foundation/mixins" as *;
+
+.l-header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: 64px;
+    background: $primary-color;
+    padding-left: 20px;
+
+    & > .e-ham {
+        display: none;
+        position: relative;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+
+        hr {
+            position: absolute;
+            border: none;
+            outline: none;
+            width: 30px;
+            height: 2px;
+            background: #fff;
+
+            &:nth-of-type(1) {
+                top: 18px;
+            }
+            &:nth-of-type(2) {
+                top: 25px;
+            }
+            &:nth-of-type(3) {
+                top: 32px;
+            }
+        }
+    }
+
+    & > .e-title {
+        color: #fff;
+    }
+
+    & > .e-form {
+        margin-left: auto;
+        padding-right: 10px;
+        height: 40px;
+
+        & > .e-logout {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+    }
+}
+
+@include respond("md") {
+    .l-header {
+        & > .e-ham {
+            display: block;
+        }
+    }
+}
