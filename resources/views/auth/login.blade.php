@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
@@ -21,10 +21,11 @@
                     @csrf
 
                     <div class="p-login__form-group">
-                        <label for="email" class="p-login__label">Email Address (ID)</label>
-                        <input id="email" type="email" class="p-login__input @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                        @error('email')
+                        <label for="user_id" class="p-login__label">User ID</label>
+                        <input id="user_id" type="text"
+                            class="p-login__input @error('user_id') is-invalid @enderror" name="user_id"
+                            value="{{ old('user_id') }}" required autocomplete="user_id" autofocus>
+                        @error('user_id')
                             <span class="p-login__error" role="alert">{{ $message }}</span>
                         @enderror
                     </div>
@@ -62,6 +63,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('show-password').addEventListener('change', function() {
+            let passwordInput = document.getElementById('password');
+            if (this.checked) {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+    </script>
 </body>
 
 </html>
