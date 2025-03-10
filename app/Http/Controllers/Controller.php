@@ -18,14 +18,14 @@ class Controller
         $credentials = $request->only('user_id', 'password');
 
         if (Auth::attempt($credentials)) {
-
             $request->session()->regenerate();
             $request->session()->put('user_id', Auth::user()->user_id);
             return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
-            'user_id' => 'ユーザー情報が一致しません。'
+            'user_id' => 'ユーザーIDまたはパスワードが一致しません。',
+            'password' => 'ユーザーIDまたはパスワードが一致しません。'
         ]);
     }
 
