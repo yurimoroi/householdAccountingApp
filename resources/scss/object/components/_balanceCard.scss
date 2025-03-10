@@ -1,0 +1,36 @@
+@use "../../foundation/variables" as *;
+
+.c-balance-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    height: 100px;
+    padding: 15px;
+    border-radius: 15px;
+
+    &.income {
+        background: $income-color;
+    }
+    &.expense {
+        background: $expense-color;
+    }
+    &.balance {
+        background: $balance-color;
+    }
+
+    & > .e-title {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        & > .e-title-text {
+            color: #fff;
+        }
+    }
+
+    & > .e-amount {
+        text-align: right;
+        color: #fff;
+    }
+}
