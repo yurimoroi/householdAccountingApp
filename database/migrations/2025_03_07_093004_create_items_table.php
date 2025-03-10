@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('content', 50)->comment('内容')->nullable(false);
 
             $table->foreign("user_id")->references("user_id")->on("users");
+            $table->foreign("category")->references("id")->on("categories");
 
             $table->comment("項目");
         });
