@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name', 20)->comment("名前");
 
             $table->foreign("user_id")->references("user_id")->on("users");
+
+            $table->comment("カテゴリー");
         });
     }
 
