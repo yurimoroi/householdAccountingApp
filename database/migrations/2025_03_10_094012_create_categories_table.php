@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id()->primary()->comment("カテゴリーID");
+            $table->string("type", 7)->comment("種類");
             $table->string('user_id', 50)->unique()->comment("ユーザーID");
             $table->string('name', 20)->comment("名前");
 
             $table->foreign("user_id")->references("user_id")->on("users");
+
+            $table->comment("カテゴリー");
         });
     }
 
