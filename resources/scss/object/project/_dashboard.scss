@@ -1,0 +1,377 @@
+@use "../../foundation/variables" as *;
+
+.p-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: 130px 1fr;
+    grid-template-areas:
+        "balance detail"
+        "calendar detail";
+    background: #f5f5f5;
+
+    & > .e-balance {
+        padding: 15px;
+        grid-area: balance;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    & > .e-calendar {
+        grid-area: calendar;
+        padding: 0 20px;
+
+        & > #calendar {
+            max-height: calc(100vh - 200px);
+        }
+
+        .fc-icon-chevron-left::before,
+        .fc-icon-chevron-right::before {
+            color: #ccc;
+        }
+
+        .fc-col-header-cell {
+            background: $income-color;
+            padding: 5px 0;
+
+            .fc-col-header-cell-cushion {
+                color: #fff;
+                font-weight: bold;
+            }
+        }
+
+        .fc-dayGridMonth-view {
+            background: #fff;
+
+            .fc-day.active {
+                background: #eaf5fd;
+            }
+        }
+
+        .event-income {
+            color: $income-color;
+            text-align: right;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        .event-expense {
+            color: $expense-color;
+            text-align: right;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        .event-balance {
+            color: $balance-color;
+            text-align: right;
+            font-size: 0.85rem;
+        }
+    }
+
+    & > .e-detail {
+        grid-area: detail;
+        padding: 20px 15px;
+        background: #fff;
+        position: relative;
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+
+        & > .e-right {
+            z-index: 2;
+
+            & > .e-header {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                & > .e-dates {
+                    display: flex;
+                    gap: 5px;
+
+                    & > .e-title {
+                        font-weight: bold;
+                    }
+
+                    & > .e-date {
+                        font-weight: bold;
+                    }
+                }
+
+                & > .e-balance {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+
+                    & > .e-balance-above {
+                        display: flex;
+                        gap: 15px;
+
+                        & > .e-balance-card-mini {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            padding: 20px 10px;
+                            border-radius: 10px;
+                            background: #f5f5f5;
+                            box-shadow: 1px 2px #eee;
+
+                            & > .e-title {
+                                font-weight: 500;
+                                text-align: center;
+                            }
+
+                            & > .e-amount {
+                                text-align: right;
+                                font-weight: 500;
+
+                                &.income {
+                                    color: $income-color;
+                                }
+                                &.expense {
+                                    color: $expense-color;
+                                }
+                                &.balance {
+                                    color: $balance-color;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & > .e-detail-title {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    & > .e-title {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                    }
+
+                    & > .e-add {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        cursor: pointer;
+
+                        & > .e-add-text {
+                            color: $income-color;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+
+            & > .e-list {
+                margin-top: 10px;
+                padding: 0;
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                height: calc(100vh - 380px);
+                overflow-y: auto;
+                scrollbar-width: none;
+
+                & > .e-list-card {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    &.expense {
+                        background: $expense-color;
+                    }
+                    &.income {
+                        background: $income-color;
+                    }
+
+                    & > .e-category {
+                        color: #fff;
+                        font-size: 0.75rem;
+                        font-weight: bold;
+                    }
+
+                    & > .e-id {
+                        display: none;
+                    }
+
+                    & > .e-content {
+                        max-width: 100%;
+                        color: #fff;
+                        overflow-wrap: break-word;
+                    }
+
+                    & > .e-amount {
+                        color: #fff;
+                        text-align: right;
+                    }
+                }
+            }
+        }
+
+        & > .e-input-form {
+            width: 300px;
+            height: 100%;
+            padding: 20px 15px;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: -100%;
+            border-left: 1px solid rgba(0, 0, 0, 0.12);
+            border-right: 1px solid rgba(0, 0, 0, 0.12);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            transition: 0.3s;
+
+            &.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            & > .e-title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                & > .e-title-text {
+                    font-weight: bold;
+                    font-size: 1.5rem;
+                }
+
+                & > svg {
+                    cursor: pointer;
+                }
+            }
+
+            & > .e-form {
+                margin-top: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                & > .e-select {
+                    display: flex;
+
+                    & > .e-box {
+                        width: 50%;
+                        padding: 10px 0;
+                        background: #fff;
+                        cursor: pointer;
+                        transition: 0.3s;
+
+                        &.expense {
+                            border: 1px solid $expense-color;
+                            border-radius: 5px 0 0 5px;
+
+                            & > .e-text {
+                                color: $expense-color;
+                            }
+                        }
+                        &.income {
+                            border: 1px solid $income-color;
+                            border-radius: 0 5px 5px 0;
+
+                            & > .e-text {
+                                color: $income-color;
+                            }
+                        }
+
+                        &.active {
+                            &.expense {
+                                background: $expense-color;
+                            }
+                            &.income {
+                                background: $income-color;
+                            }
+
+                            & > .e-text {
+                                color: #fff;
+                            }
+                        }
+
+                        & > .e-text {
+                            text-align: center;
+                            font-weight: bold;
+                        }
+                    }
+                }
+
+                & > .e-input {
+                    position: relative;
+
+                    input[type="text"],
+                    input[type="number"],
+                    input[type="date"],
+                    select {
+                        width: 100%;
+                        height: 50px;
+                        outline: none;
+                        border: 1px solid #ccc;
+                        padding: 0 10px;
+                        border-radius: 3px;
+                    }
+                    select {
+                        font-size: 0.8rem;
+                        font-weight: 500;
+                    }
+
+                    input[type="text"]:focus ~ .e-placeholder,
+                    input[type="text"]:not(:placeholder-shown) ~ .e-placeholder,
+                    input[type="number"]:focus ~ .e-placeholder,
+                    input[type="number"]:not(:placeholder-shown)
+                        ~ .e-placeholder,
+                    input[type="date"]:focus ~ .e-placeholder,
+                    input[type="date"]:not(:placeholder-shown) ~ .e-placeholder,
+                    select:focus ~ .e-placeholder,
+                    select:not(:invalid) ~ .e-placeholder {
+                        top: -10px;
+                        left: 10px;
+                        font-size: 12px;
+                        line-height: 20px;
+                        background: #fff;
+                        padding: 0 5px;
+                        font-weight: bold;
+                    }
+
+                    & > .e-placeholder {
+                        position: absolute;
+                        top: 0;
+                        left: 10px;
+                        line-height: 50px;
+                        pointer-events: none;
+                        transition: 0.3s;
+                    }
+                }
+
+                & > .e-submit {
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
+                    color: #fff;
+                    font-weight: bold;
+                    font-size: 1.1rem;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    transition: 0.3s;
+
+                    &.income {
+                        background: $income-color;
+                    }
+                    &.expense {
+                        background: $expense-color;
+                    }
+                    &.delete {
+                        display: none;
+                        background: $expense-color;
+                    }
+                    &.delete.active {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}
