@@ -6,4 +6,9 @@
 @use "./layout/header";
 @use "./layout/sidebar";
 
+@use "./object/components/balanceCard";
+@use "./object/components/balanceCardMini";
+
 @use "./object/project/login";
+@use "./object/project/dashboard";
+@use "./object/project/report";
