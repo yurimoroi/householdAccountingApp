@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,5 +36,23 @@ class Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('login');
+    }
+
+    public function getDashboard()
+    {
+        $userId = Auth::user()->user_id;
+
+        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('user_id', $userId)->orderBy("id", "asc")->get();
+
+        return view("dashboard", compact('items'));
+    }
+
+    public function getReport()
+    {
+        $userId = Auth::user()->user_id;
+
+        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('user_id', $userId)->orderBy("id", "asc")->get();
+
+        return view("report", compact('items'));
     }
 }
