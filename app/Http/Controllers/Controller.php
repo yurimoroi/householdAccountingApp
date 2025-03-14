@@ -41,8 +41,8 @@ class Controller
     public function getDashboard()
     {
         $userId = Auth::user()->user_id;
-        // dd($userId);
-        $items = Item::orderBy("id", "asc")->get();
+
+        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('user_id', $userId)->orderBy("id", "asc")->get();
 
         return view("dashboard", compact('items'));
     }
@@ -51,7 +51,7 @@ class Controller
     {
         $userId = Auth::user()->user_id;
 
-        $items = Item::orderBy("id", "asc")->get();
+        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('user_id', $userId)->orderBy("id", "asc")->get();
 
         return view("report", compact('items'));
     }
