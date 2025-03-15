@@ -56,8 +56,7 @@
                 <p class="p-login__text">
                     If you are not registered yet, please proceed to new member registration.
                 </p>
-                {{-- <a href="{{ route('register') }}" class="p-login__register-button"> --}}
-                <a href="#" class="p-login__register-button">
+                <a href="/signup" class="p-login__register-button">
                     Sign Up
                 </a>
             </div>

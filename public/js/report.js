@@ -80,8 +80,9 @@ const initPieChart = (month, type) => {
     const monthlySummary = items.filter((item) =>
         item.create_dt.startsWith(month)
     );
+
     const categorySummary = monthlySummary.reduce((acc, data) => {
-        const category = data.category;
+        const category = data.name;
         if (!acc[category]) {
             acc[category] = {
                 type: "",
@@ -96,10 +97,13 @@ const initPieChart = (month, type) => {
     }, []);
 
     const key = Object.keys(categorySummary).filter((item) => {
-        return type === "income"
-            ? category.income.includes(item)
-            : category.expense.includes(item);
+        const filterCategories = categories.filter(
+            (data) => data.type === type
+        );
+
+        return filterCategories.some((cat) => cat.name === item);
     });
+
     const data = Object.values(categorySummary)
         .filter((item) => item.type === type)
         .map((item) => item.amount);
@@ -236,7 +240,7 @@ const initTable = (month) => {
         checkbox.type = "checkbox";
 
         dateTd.textContent = item.create_dt;
-        categoryTd.textContent = item.category;
+        categoryTd.textContent = item.name;
         amountTd.textContent = formatSpreadMonry(item.amount);
         contentTd.textContent = item.content;
         idTd.textContent = item.id;
