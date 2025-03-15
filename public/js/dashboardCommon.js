@@ -33,3 +33,31 @@ export const getBalanceCard = (type) => {
 export const getBalanceCardMini = (type) => {
     return document.querySelector(`.c-balance-card-mini .e-amount.${type}`);
 };
+
+export const getCategoryIcon = () => {
+    return document.querySelector(".e-category-icon path");
+};
+
+export const getToggleModalBtn = (type) => {
+    return document.querySelector(`.e-modal .e-select .e-box.${type}`);
+};
+
+export const getModalSubmitBtn = (type) => {
+    return document.querySelector(`.e-modal .e-form .e-submit.${type}`);
+};
+
+export const getModalInputType = () => {
+    return document.querySelector(".e-modal .e-form input[name='type']");
+};
+
+export const getModalInputNewModify = () => {
+    return document.querySelector(".e-modal .e-form input[name='newModify']");
+};
+
+export const getModalInput = (type) => {
+    return document.querySelector(`.e-modal .e-form .e-input.${type}`);
+};
+
+export const getModalForm = () => {
+    return document.querySelector(".e-modal .e-form");
+};

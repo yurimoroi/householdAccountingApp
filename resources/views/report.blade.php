@@ -90,6 +90,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        let items = @json($items)
+        let items = @json($items);
+        const categories = @json($categories);
     </script>
 @endsection

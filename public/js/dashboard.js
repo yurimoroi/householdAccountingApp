@@ -8,8 +8,14 @@ import {
     getInputType,
     getSubmitBtn,
     getToggleBtn,
+    getCategoryIcon,
+    getToggleModalBtn,
+    getModalSubmitBtn,
+    getModalInput,
+    getModalInputNewModify,
+    getModalInputType,
+    getModalForm,
 } from "./dashboardCommon.js";
-import categories from "./util/category.js";
 import { formatDate, formatMonth } from "./util/formatDate.js";
 import { createMonthlySummary } from "./util/createMonthlySummary.js";
 import { formatSpreadMonry, formatStringToNumber } from "./util/formatMoney.js";
@@ -53,12 +59,14 @@ const setCategory = (type) => {
     option.text = "";
     category.appendChild(option);
 
-    for (let cat of categories[type]) {
+    const filterCategories = categories.filter((cat) => cat.type === type);
+
+    filterCategories.forEach((cat) => {
         let option = document.createElement("option");
-        option.value = cat;
-        option.text = cat;
+        option.value = cat.id;
+        option.text = cat.name;
         category.appendChild(option);
-    }
+    });
 };
 
 const onAddItem = () => {
@@ -122,12 +130,14 @@ const setIncome = () => {
     const submitBtn = getSubmitBtn("save");
     const type = getInputType();
     type.value = "income";
+    const categoryIcon = getCategoryIcon();
 
     incomeBtn.classList.add("active");
     expenseBtn.classList.remove("active");
     submitBtn.classList.remove("expense");
     submitBtn.classList.add("income");
     setCategory("income");
+    categoryIcon.style.fill = "#1976d2";
 };
 
 const setExpense = () => {
@@ -136,12 +146,14 @@ const setExpense = () => {
     const submitBtn = getSubmitBtn("save");
     const type = getInputType();
     type.value = "expense";
+    const categoryIcon = getCategoryIcon();
 
     expenseBtn.classList.add("active");
     incomeBtn.classList.remove("active");
     submitBtn.classList.remove("income");
     submitBtn.classList.add("expense");
     setCategory("expense");
+    categoryIcon.style.fill = "#F44335";
 };
 
 const valicationDate = () => {
@@ -401,9 +413,233 @@ const onDelete = () => {
     });
 };
 
+const onCategory = () => {
+    const categoryIcon = getCategoryIcon();
+    const modal = document.querySelector(".e-modal");
+
+    categoryIcon.addEventListener("click", () => {
+        modal.classList.toggle("active");
+        setModalNew();
+        setModalExpense();
+        setModalCategory("expense");
+    });
+};
+
+const onModal = () => {
+    const modal = document.querySelector(".e-modal");
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+};
+
+const toggleModalNewModify = () => {
+    const newBtn = getToggleModalBtn("new");
+    const modifyBtn = getToggleModalBtn("modify");
+
+    newBtn.addEventListener("click", () => {
+        setModalNew();
+    });
+    modifyBtn.addEventListener("click", () => {
+        setModalModify();
+    });
+};
+
+const setModalNew = () => {
+    const newBtn = getToggleModalBtn("new");
+    const modifyBtn = getToggleModalBtn("modify");
+    const deleteBtn = getModalSubmitBtn("delete");
+    const newInput = getModalInput("new");
+    const newSelect = newInput.querySelector("input");
+    const modifyInput = getModalInput("modify");
+    const modifySelect = modifyInput.querySelector("select");
+    const newModify = getModalInputNewModify();
+    newModify.value = "new";
+
+    newBtn.classList.add("active");
+    modifyBtn.classList.remove("active");
+    deleteBtn.classList.remove("active");
+    newSelect.value = "";
+    modifySelect.value = "";
+    modifySelect.disabled = true;
+    modifySelect.required = false;
+};
+
+const setModalModify = () => {
+    const newBtn = getToggleModalBtn("new");
+    const modifyBtn = getToggleModalBtn("modify");
+    const deleteBtn = getModalSubmitBtn("delete");
+    const newInput = getModalInput("new");
+    const newSelect = newInput.querySelector("input");
+    const modifyInput = getModalInput("modify");
+    const modifySelect = modifyInput.querySelector("select");
+    const newModify = getModalInputNewModify();
+    newModify.value = "modify";
+
+    newBtn.classList.remove("active");
+    modifyBtn.classList.add("active");
+    deleteBtn.classList.add("active");
+    newSelect.value = "";
+    modifySelect.value = "";
+    modifySelect.disabled = false;
+    modifySelect.required = true;
+};
+
+const toggleModalIncomeExpense = () => {
+    const expenseBtn = getToggleModalBtn("expense");
+    const incomeBtn = getToggleModalBtn("income");
+
+    expenseBtn.addEventListener("click", () => {
+        setModalExpense();
+    });
+    incomeBtn.addEventListener("click", () => {
+        setModalIncome();
+    });
+};
+
+const setModalIncome = () => {
+    const incomeBtn = getToggleModalBtn("income");
+    const expenseBtn = getToggleModalBtn("expense");
+    const submitBtn = getModalSubmitBtn("save");
+    const type = getModalInputType();
+    type.value = "income";
+
+    incomeBtn.classList.add("active");
+    expenseBtn.classList.remove("active");
+    submitBtn.classList.remove("expense");
+    submitBtn.classList.add("income");
+    setModalCategory("income");
+};
+
+const setModalExpense = () => {
+    const incomeBtn = getToggleModalBtn("income");
+    const expenseBtn = getToggleModalBtn("expense");
+    const submitBtn = getModalSubmitBtn("save");
+    const type = getModalInputType();
+    type.value = "expense";
+
+    expenseBtn.classList.add("active");
+    incomeBtn.classList.remove("active");
+    submitBtn.classList.remove("income");
+    submitBtn.classList.add("expense");
+    setModalCategory("expense");
+};
+
+const setModalCategory = (type) => {
+    const category = document.querySelector(
+        '.e-modal .e-form .e-input select[name="category"]'
+    );
+    category.innerHTML = "";
+    let option = document.createElement("option");
+    option.value = "";
+    option.text = "";
+    category.appendChild(option);
+
+    const filterCategories = categories.filter((cat) => cat.type === type);
+
+    filterCategories.forEach((cat) => {
+        let option = document.createElement("option");
+        option.value = cat.id;
+        option.text = cat.name;
+        category.appendChild(option);
+    });
+};
+
+const onModalSave = () => {
+    const form = getModalForm();
+    const saveBtn = getModalSubmitBtn("save");
+
+    saveBtn.addEventListener("click", async () => {
+        const data = {
+            newModify: form.newModify.value,
+            type: form.type.value,
+            category: form.category.value,
+            name: form.name.value,
+        };
+
+        const csrfToken = getCsrfToken();
+
+        const res = await fetch("/upsertCategory", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`HTTPエラー: ${res.status}\n${text}`);
+        }
+        const result = await res.json();
+
+        alert("カテゴリを更新しました");
+
+        categories = result;
+
+        const modal = document.querySelector(".e-modal");
+        modal.classList.remove("active");
+        const type = getInputType();
+        setCategory(type.value);
+    });
+};
+
+const onModalDelete = () => {
+    const form = getModalForm();
+    const deleteBtn = getModalSubmitBtn("delete");
+
+    deleteBtn.addEventListener("click", async () => {
+        const data = {
+            category: form.category.value,
+        };
+
+        const csrfToken = getCsrfToken();
+
+        const res = await fetch("/deleteCategory", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`HTTPエラー: ${res.status}\n${text}`);
+        }
+        const result = await res.json();
+
+        if ("message" in result) {
+            alert(result.message);
+            return;
+        }
+
+        alert("カテゴリを削除しました");
+
+        categories = result;
+
+        const modal = document.querySelector(".e-modal");
+        modal.classList.remove("active");
+        const type = getInputType();
+        setCategory(type.value);
+    });
+};
+
 onAddItem();
 onCloseBtn();
 toggleIncomeExpense();
 valicationDate();
 onSave();
 onDelete();
+onCategory();
+onModal();
+toggleModalNewModify();
+toggleModalIncomeExpense();
+onModalSave();
+onModalDelete();

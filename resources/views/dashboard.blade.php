@@ -130,6 +130,11 @@
                     </select>
 
                     <label class="e-placeholder">Category</label>
+
+                    <svg class="e-category-icon" viewBox="0 0 448 512">
+                        <path
+                            d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM200 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                    </svg>
                 </div>
 
                 <div class="e-input">
@@ -150,12 +155,59 @@
         </div>
     </section>
 
+    <section class="e-modal">
+        <form class="e-form" role="form" action="">
+            @csrf
+
+            <div class="e-select">
+                <div class="e-box new active">
+                    <p class="e-text">New</p>
+                </div>
+
+                <div class="e-box modify">
+                    <p class="e-text">Modify</p>
+                </div>
+            </div>
+            <input type="hidden" name="newModify">
+
+            <div class="e-select">
+                <div class="e-box expense active">
+                    <p class="e-text">Expense</p>
+                </div>
+
+                <div class="e-box income">
+                    <p class="e-text">Income</p>
+                </div>
+            </div>
+            <input type="hidden" name="type">
+
+            <div class="e-input modify">
+                <select name="category">
+                    <option value="" selected></option>
+                </select>
+
+                <label class="e-placeholder">Category</label>
+            </div>
+
+            <div class="e-input new">
+                <input type="text" name="name" placeholder="" autocomplete="off" required>
+
+                <label class="e-placeholder">Name</label>
+            </div>
+
+            <p class="e-submit expense save">Save</p>
+            <p class="e-submit delete">Delete</p>
+        </form>
+    </section>
+
     <script type="module" src="{{ asset('/js/dashboard.js') }}"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 
     <script>
         let items = @json($items);
-        let datePerItems
+        let categories = @json($categories);
+        let datePerItems;
         let eventData;
+        console.log(categories);
     </script>
 @endsection
