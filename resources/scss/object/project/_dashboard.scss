@@ -193,6 +193,10 @@
                         font-weight: bold;
                     }
 
+                    & > .e-category-hidden {
+                        display: none;
+                    }
+
                     & > .e-id {
                         display: none;
                     }
