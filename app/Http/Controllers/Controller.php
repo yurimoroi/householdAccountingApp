@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -61,17 +62,21 @@ class Controller
     {
         $userId = Auth::user()->user_id;
 
-        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('items.user_id', $userId)->orderBy("items.id", "asc")->get();
+        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.category', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('items.user_id', $userId)->orderBy("items.id", "asc")->get();
 
-        return view("dashboard", compact('items'));
+        $categories = Category::select('name', 'id', 'type')->whereNull('user_id')->orWhere('user_id', $userId)->orderBy("id", "asc")->get();
+
+        return view("dashboard", compact('items', 'categories'));
     }
 
     public function getReport()
     {
         $userId = Auth::user()->user_id;
 
-        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('items.user_id', $userId)->orderBy("items.id", "asc")->get();
+        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.category', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('items.user_id', $userId)->orderBy("items.id", "asc")->get();
 
-        return view("report", compact('items'));
+        $categories = Category::select('name', 'id', 'type')->whereNull('user_id')->orWhere('user_id', $userId)->orderBy("id", "asc")->get();
+
+        return view("report", compact('items', 'categories'));
     }
 }
