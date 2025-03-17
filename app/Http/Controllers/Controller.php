@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class Controller
 {
@@ -12,6 +14,11 @@ class Controller
     {
 
         return view('auth.login');
+    }
+
+    public function getSignup()
+    {
+        return view('auth.signup');
     }
 
     public function login(Request $request)
@@ -28,6 +35,18 @@ class Controller
             'user_id' => 'ユーザーIDまたはパスワードが一致しません。',
             'password' => 'ユーザーIDまたはパスワードが一致しません。'
         ]);
+    }
+
+    public function signup(Request $request)
+    {
+
+        User::create([
+            'user_id' => $request->user_id,
+            'name' => $request->name,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('login');
     }
 
     public function logout(Request $request)
