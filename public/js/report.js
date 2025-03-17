@@ -1,4 +1,3 @@
-import category from "./util/category.js";
 import { createMonthlySummary } from "./util/createMonthlySummary.js";
 import { formatMonth } from "./util/formatDate.js";
 import { formatSpreadMonry } from "./util/formatMoney.js";
