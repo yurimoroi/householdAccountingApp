@@ -208,6 +208,5 @@
         let categories = @json($categories);
         let datePerItems;
         let eventData;
-        console.log(categories);
     </script>
 @endsection

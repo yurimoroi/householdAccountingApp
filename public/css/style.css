@@ -624,6 +624,9 @@ li {
   font-size: 0.75rem;
   font-weight: bold;
 }
+.p-dashboard > .e-detail > .e-right > .e-list > .e-list-card > .e-category-hidden {
+  display: none;
+}
 .p-dashboard > .e-detail > .e-right > .e-list > .e-list-card > .e-id {
   display: none;
 }

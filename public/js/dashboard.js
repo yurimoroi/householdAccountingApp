@@ -190,17 +190,20 @@ const changeDetail = (date) => {
     dateData.forEach((d) => {
         const li = document.createElement("li");
         const spanC = document.createElement("span");
+        const spanCH = document.createElement("span");
         const spanI = document.createElement("span");
         const pC = document.createElement("p");
         const pA = document.createElement("p");
 
         li.className = `e-list-card ${d.type}`;
         spanC.className = "e-category";
+        spanCH.className = "e-category-hidden";
         spanI.className = "e-id";
         pC.className = "e-content";
         pA.className = "e-amount";
 
-        spanC.textContent = d.category;
+        spanC.textContent = d.name;
+        spanCH.textContent = d.category;
         spanI.textContent = d.id;
         pC.textContent = d.content;
         pA.textContent = formatSpreadMonry(d.amount);
@@ -210,6 +213,7 @@ const changeDetail = (date) => {
         });
 
         li.appendChild(spanC);
+        li.appendChild(spanCH);
         li.appendChild(spanI);
         li.appendChild(pC);
         li.appendChild(pA);
@@ -227,7 +231,8 @@ const onListItem = (e) => {
 
     const titleDate = getDetailHeaderDate();
     const id = e.currentTarget.querySelector(".e-id").textContent;
-    const category = e.currentTarget.querySelector(".e-category").textContent;
+    const category =
+        e.currentTarget.querySelector(".e-category-hidden").textContent;
     const amount = formatStringToNumber(
         e.currentTarget.querySelector(".e-amount").textContent
     );

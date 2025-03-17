@@ -27,8 +27,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 return acc;
             }, {});
-
-            console.log(datePerData);
         } catch (e) {
             console.error("エラーが発生しました:", e);
         }
