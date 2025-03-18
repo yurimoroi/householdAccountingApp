@@ -83,6 +83,16 @@ class RestController extends Controller
             ]);
         }
 
+        // Itemsテーブルで該当カテゴリーが使用されている件数を取得
+        $itemCount = Item::where('category', $req->category)->count();
+
+        // もし1件以上存在する場合は削除不可
+        if ($itemCount > 0) {
+            return response()->json([
+                'message' => '使用しているカテゴリーは削除できません。'
+            ]);
+        }
+
         // カテゴリーを削除
         $category->delete();
 

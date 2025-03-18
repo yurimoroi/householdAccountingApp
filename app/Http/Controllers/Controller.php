@@ -60,6 +60,7 @@ class Controller
 
     public function getDashboard()
     {
+        // $userIdは変数、=は定義
         $userId = Auth::user()->user_id;
 
         $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.category', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('items.user_id', $userId)->orderBy("items.id", "asc")->get();
