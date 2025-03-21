@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Auth;
 class RestController extends Controller
 {
     //upsertメソッドは1つのクエリで複数のレコードを更新(update)または挿入(insert)する機能
-
     public function upsertItems(Request $req)
     {
         $userId = Auth::user()->user_id;
 
+        // アイテムを登録または更新
         Item::updateOrCreate(
             ["id" => $req->id],
             [
@@ -27,9 +27,48 @@ class RestController extends Controller
             ]
         );
 
-        $items = Item::select('items.id', 'items.type', 'items.create_dt', 'categories.name', 'items.category', 'items.amount', 'items.content')->join('categories', 'items.category', '=', 'categories.id')->where('items.user_id', $userId)->orderBy("items.id", "asc")->get();
+        // `create_dt` の年月を取得（フォーマット：YYYY-MM）
+        $targetMonth = date('Y-m', strtotime($req->date));
 
-        return $items;
+        // 差額の取得処理
+        $budgetDifference = Item::where('items.user_id', $userId)
+            ->where('items.type', 'expense')
+            ->where('items.category', $req->category)
+            ->whereRaw("DATE_FORMAT(items.create_dt, '%Y-%m') = ?", [$targetMonth]) // 年月が一致する
+            ->join('budgets', function ($join) use ($userId) {
+                $join->on('items.category', '=', 'budgets.category')
+                    ->where('budgets.user_id', $userId);
+            })
+            ->selectRaw('(budgets.budget_amount - SUM(items.amount)) AS budget_difference')
+            ->groupBy('budgets.budget_amount')
+            ->first();
+
+        // 予算オーバーの判定
+        $message = null;
+        if ($budgetDifference && $budgetDifference->budget_difference < 0) {
+            $message = '予算金額が超えています。';
+        }
+
+        // 最新のアイテム一覧を取得
+        $items = Item::select(
+            'items.id',
+            'items.type',
+            'items.create_dt',
+            'categories.name',
+            'items.category',
+            'items.amount',
+            'items.content'
+        )
+            ->join('categories', 'items.category', '=', 'categories.id')
+            ->where('items.user_id', $userId)
+            ->orderBy("items.id", "asc")
+            ->get();
+
+        // JSONレスポンスを返す
+        return response()->json([
+            'message' => $message,
+            'items' => $items
+        ]);
     }
 
     public function deleteItems(Request $req)
