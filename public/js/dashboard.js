@@ -342,6 +342,21 @@ const onSave = () => {
     const saveBtn = getSubmitBtn("save");
 
     saveBtn.addEventListener("click", async () => {
+        if (Number(form.amount.value) <= 0) {
+            alert("金額は0以上で入力してください");
+            return;
+        }
+
+        if (form.amount.value.length > 9) {
+            alert("金額は9桁以内で入力してください");
+            return;
+        }
+
+        if (form.content.value.length > 50) {
+            alert("内容は50文字以内で入力してください");
+            return;
+        }
+
         const data = {
             id: form.id.value,
             type: form.type.value,
@@ -590,6 +605,15 @@ const onModalSave = () => {
         modal.classList.remove("active");
         const type = getInputType();
         setCategory(type.value);
+
+        items.forEach((item) => {
+            if (item.category == form.category.value) {
+                item.name = form.name.value;
+            }
+        });
+
+        const date = getDetailHeaderDate();
+        changeDetail(date.textContent);
     });
 };
 

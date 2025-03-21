@@ -144,7 +144,7 @@
                 </div>
 
                 <div class="e-input">
-                    <input type="text" name="content" placeholder="" autocomplete="off" required>
+                    <input type="text" name="content" placeholder="" autocomplete="off" maxlength="50" required>
 
                     <label class="e-placeholder">Content</label>
                 </div>
